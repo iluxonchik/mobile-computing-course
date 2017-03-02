@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Mobile and Ubiquitous Computing 2016/2017 - MEIC/MERC - DEI - IST</title>
+  <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>
+
+<div id="content">
+
+  <h1 align="center"><font size="4">MEIC/MERC 2016/2017</font></h1>
+  <h1 align="center"><font size="5">Mobile and Ubiquitous Computing</h1>
+  <h1 align="center"><font size="4">Lab Guide 1</font></h1>
+  <h1 align="center"><font size="5">Introduction to Android</font></h1>
+
+  <h4>&nbsp;</h4>
+
+  <hr />
+  <h4>Objectives:</h4>
+  <ul>
+  <li>Introduction to Android application development.</li>
+  <li>Familiarization with Android development tools: Android Studio and Gradle.</li>
+  </ul>
+  <h4>Material:</h4>
+  <ul>
+      <li><a href="slides.pdf">Class Slides</a></li>
+  </ul>
+  <hr />
+
+  <h3>
+      Exercise I &ndash; Hello World</h3>
+      <p>
+          Implement a Hello World application which renders the two activities shown in Figure 1. The left-hand side activity is shown when the app is started, and displays a textbox and a "Send" button. When the user types a string in the textbox and presses the button, the right-hand side activity is created, echoing the input string back to the user.</p>
+
+      <figure>
+        <img src="http://developer.android.com/images/training/firstapp/firstapp.png"/>
+        <figcaption>Figure 1: Activities implemented by the Hello World app.</figcaption>
+      </figure>
+ 
+      <h4>1. Create an Android project</h4>
+      <p>
+          The first step to implement the app is to create an Android project: 
+
+          <ul>
+              <li>Open the Android Studio and select "Start a new Android Studio project". In the panel "Configure your new project", assign names to your app (<code>Hello Word</code>) and to the company domain (<code>cmov.tecnico.ulisboa.pt</code>). Accept the suggested project location.</li>
+              <li>Under "Select the form factors your app will run on", check the box for "Phone and Tablet". For "Minimum SDK", keep the suggested API and leave all other options (TV, Wear, and Glass) unchecked.</li>
+              <li>In the panel "Add an activity to Mobile", select "Blank Activity".</li>
+              <li>Under "Choose options for your new file", leave the fields as they are.</li>
+          </ul>
+
+        <p>
+          Navigate to the project view (in the upper left panel) and explore the project directory tree. Describe the role of the following files (Hint: read <a href="http://developer.android.com/training/basics/firstapp/index.html">"Building Your First App"</a>):
+
+          <ul>
+              <li><code>app/src/main/res/layout/activity_my.xml</code></li>
+              <li><code>app/src/main/java/pt.ulisboa.tecnico.cmov.helloworld/MyActivity.java</code></li>
+              <li><code>app/src/res/AndroidManifest.xml</code></li>
+              <li><code>app/build.gradle</code></li>
+          </ul>
+
+
+      <h4>2. Run the application</h4>
+      <p>
+          To test your app you can use the emulator or a real device.
+      <p>
+          <b>Emulator:</b> To run the application on the emulator, perform the following steps:
+          <ul>
+              <li>Create an <a href="http://developer.android.com/tools/devices/index.html">Android Virtual Device</a> (AVD): (a) launch the Android Virtual Device Management under "Tools > Android > AVD Manager", (b) click "Create Virtual Device", (c) in the "Select Hardware" window select a device configuration (e.g., Nexus 6), (d) select the desired system version for AVD (e.g., Lollipop - API 21 - ABI x86), and (e) finish.</li>
+              <li>Launch the newly created AVD: in the Virtual Device Management panel, select the AVD and press the "play" icon (it can take a few minutes for the emulator to bootstrap).</li>
+              <li>Run the app from Android Studio: (a) in Android Studio, click "Run" <img src="http://developer.android.com/images/tools/as-run.png" width="2%"></img>, (b) in the "Choose Device" window, click the radio button "Choose a running device", select the running AVD, and hit ok. The app should appear in the emulator</li>
+          </ul>
+      <p>
+          <b>Real Device</b>: If you have a real device and a USB cable, proceed as follows:
+          <ul>
+            <li><i>Set up your device:</i> (a) plug in your device to your development machine with a USB cable, (b) enable "USB debugging" on your device &ndash; on most devices running Android 3.2 or older, this option is located under "Settings > Applications > Development; on Android 4.0 and newer, it's in "Settings > Developer options". <b>Note:</b> On Android 4.2+, "Developer options" is hidden by default. To make it available proceed as described <a href="http://developer.android.com/training/basics/firstapp/running-app.html">here</a>.</li>
+            <li><i>Run the app from Android Studio</i>: (a) in Android Studio, click "Run" <img src="http://developer.android.com/images/tools/as-run.png" width="2%"></img>, (b) in the "Choose Device" window, select the "Choose a running device" radio button, and pick your device.</li>
+          </ul>
+
+      <p>
+          It is possible to manage multiple AVDs in Android Studio or in a command-line interface. To learn more about this topic, read "<a href="http://developer.android.com/tools/devices/index.html">Managing Virtual Devices</a>".
+
+
+      <h4>3. Debug the application</h4>
+      <p>
+          Add the following code line to the very end of method <code>onCreate</code> of the <code>MainActivity</code> class. Then re-deploy the app code and spot the message that gets displayed in the logcat panel.
+<pre>
+    Log.d("MainActivity", "This is my first debugging message.");
+</pre>
+      <p>
+          Place a breakpoint anywhere in the application code (e.g., in the <code>Log.d</code> line), and execute the program in the debugger view. Explore the debugger functionalities by inspecting the state of the application and then resuming the process execution. While the app is stopped, it is possible to inspect the threads running on the emulator, resource utilization, etc.</p>
+
+<!--
+      <p>
+          Modify the application to produce an uncaught exception. Run the application in debugging mode. The debugger will eventually catch the exception. Trace the source of the exception by inspecting the call stack of the program. Note that you can observe the state of the program, objects, parameters, etc.
+-->
+
+      <h4>4. Build a simple user interface</h4>
+      <p>
+          Implement the activity shown in the left-hand side of Figure 1. To this end, you must modify the default user interface (UI) layout in order to include a text field and a button. This will be done in XML (<code>res/layout/activity_my.xml</code>). It is possible to specify the layout of an activity using Android Studio's GUI, but we leave it out as an exercise.
+
+      <p>
+          In Android, as shown in Figure 2, the layout of an activity's UI consists of a hierarchical tree of elements, each of which is called <a href="http://developer.android.com/reference/android/view/View.html"><code>View</code></a>. The leaves of the tree correspond to single UI elements (e.g., buttons). Climbing upwards in the tree, these elements are aggregated into groups (<a href="http://developer.android.com/reference/android/view/ViewGroup.html"><code>ViewGroup</code></a>), which in turn can be arranged into higher-level groups. The root of the tree represents the top level panel of the activity. A <code>ViewGroup</code> is also a <code>View</code>.
+
+      <figure>
+        <img src="http://developer.android.com/images/viewgroup.png"/>
+        <figcaption>Figure 2: General representation of a UI layout tree.</figcaption>
+      </figure>
+
+      <p>
+          Different <code>ViewGroup</code> elements specify different arrangements for its child views. For example, the view group named <code>LinearLayout</code> lays out child views in sequence, according to the way they appear in the XML. This sequence can be either vertical or horizontal orientation, as specified by the <code>android:orientation</code> attribute. For more information see <a href="http://developer.android.com/guide/topics/ui/declaring-layout.html">"Layouts"</a>.
+
+      <p>
+          Implement the new layout of <code>Hello World</code>'s main activity:
+
+      <ul>
+          <li>Sketch the UI tree: draw a UI tree that reflects the layout of the activity shown in the left-hand side of Figure 1. Hint: use the views <code>Button</code>, <code>EditText</code>, and <code>LinearLayout</code>.</li>
+          <li>Write the corresponding XML code: Hint: use the contents of file <a href="exercise-i/activity_my.txt">activity_my.xml</a> and see how it reflects your UI tree.</li>
+          <li>Re-run the app from Android Studio.</li>
+      </ul>
+
+      <h4>5. Start another activity</h4>
+      <p>
+          Complete your app by starting another activity when the user presses the "Send" button:
+
+      <ul>
+          <li>Create a new activity: (a) create a new file named <code>DisplayMessageActivity.java</code> in the project's source directory, next to the original <code>MyActivity.java</code> file, (b) add <a href="exercise-i/DisplayMessageActivity.java">this</a> code to the file, (c) to your <code>strings.xml</code> file, add the activity title as illustrated by <a href="exercise-i/strings.txt">this</a> XML code snippet, (iv) in your manifest file, <code>AndroidManifest.xml</code>, within the <code>Application</code> element, add the <code>activity</code> element for your <code>DisplayMessageActivity</code> class as shown <a href="exercise-i/AndroidManifest.txt">here</a>.</li>
+          <li>Start the activity when the button is pressed: (a) add the <code>sendMessage</code> method shown <a href="exercise-i/MyActivity-Snippet1.java">here</a> to class <code>MyActivity</code>, (b) bind the button to the <code>sendMessage</code> method by adding an <code>android:onClick = "sendMessage"</code> attribute to the button layout (configured in file <code>activity_my.xml</code>).</li>
+          <li>Re-execute the app from Android Studio: Your app should now yield the output displayed in Figure 1. Congrats!</li>
+      </ul>
+
+      <p>
+          Answer the following questions:
+      <ul>
+          <li type="a">What's the role of the <code>android:parentActivityName</code> attribute declared in the manifest file?</li>
+          <li type="a"> What's the purpose of variable <code>intent</code> created within the <code>DisplayMessageActivity</code> class?</li>
+      </ul>
+
+  <h3>
+      Exercise II &ndash; Demystifying Gradle</h3>
+
+      <p>
+          To manage the build process of a project, Android uses <a href="https://gradle.org/">Gradle</a>, an open source building automation system akin to <a href="http://ant.apache.org/">Ant</a>. It is important to understand how Gradle works because it will help you to fix build-related problems more promptly and enable you to manage your projects from the command line.
+
+
+      <h4>1. Basic Gradle commands</h4>
+      <p>
+          To introduce Gradle, we first explore its most basic commands. First, download it and install it on a local directory. Note that, first you will use the standard Gradle distribution, and later the distribution that comes with Android Studio.
+
+          <ul>
+              <li>Download the <a href="https://services.gradle.org/distributions/gradle-2.2.1-all.zip">gradle-2.1.1</a> distribution and unzip it to some local directory (e.g., <code>~/bin</code>). We assume that the Java SDK is properly set up on your machine.</li>
+              <li>Create an environment variable called <code>GRADLE_HOME</code> and point it to the gradle installation folder; add <code>$GRADLE_HOME/bin</code> to the <code>PATH</code> environment variable. You can then execute the <code>gradle</code> command from any directory.</li>
+          </ul>
+
+      <p>
+          On a terminal window, type the following commands and learn what they do:
+<pre>
+    gradle -v
+    gradle -q help
+    gradle -q tasks
+    gradle -q properties
+</pre>
+
+      <p>
+          Create a folder for a hypothetical project (e.g., <code>example1</code>) and create a file named <code>build.gradle</code>. This file can be seen as Gradle's <code>Makefile</code>. Add the following contents to the file:
+
+<pre>
+    task compileTask << { 
+        System.out.println "compiling..." 
+    }
+</pre>
+
+      <p>
+          Repeat the <code>gradle -q tasks</code> command, and spot the task defined in <code>build.gradle</code>. Then, run the task by executing:
+
+<pre>
+    gradle -q compileTask
+</pre>
+
+      <p>
+          Modify <code>build.gradle</code> as follows:
+
+<pre>
+    defaultTasks 'buildTask'
+
+    task compileTask << {
+      System.out.println "compiling..." 
+    }
+
+    task buildTask (dependsOn:compileTask) << {
+      System.out.println "building..."
+    }
+</pre>
+
+      <p>
+          Interpret the output of Gradle when issuing the following commands:
+<pre>
+    gradle -q compileTask
+    gradle -q buildTask
+    gradle -q
+</pre>
+
+      <p>
+          As you may have guessed by now, tasks are the building blocks to manage a project. They do things like: compile, build, run tests, package, etc. However, you don't have to write all these tasks by hand. In fact, Gradle can be extended with plugins that define tasks for specific project types: Java plugin, WAR plugin, Android plugin, etc. Next, you will build a Java project using the Gradle Java plugin.
+
+
+      <h4>2. Simple Java project with Gradle Java plugin</h4>
+      <p>
+          To introduce the Gradle Java plugin, we will implement a simple Java library. This library implements a domain class called <code>Quote</code> for managing famous quotes. A quote contains an ID, the author of the quote, and the quote text.
+      <p>
+          Create a directory for the project called <code>example2</code>. Place file <a href="exercise-ii/example2/build.gradle">build.gradle</a> in the project directory and file <a href="exercise-ii/example2/Quote.java.txt">Quote.java</a> in a project subdirectory <code>src/main/java/pt/ulisboa/tecnico/cmov/quote</code>.
+      <p>
+          Answer the following questions (Hint: refer to <a href="http://rominirani.com/2014/07/28/gradle-tutorial-part-2-java-projects/">"Gradle Tutorial: Part 2: Java Projects"</a>):
+
+          <ul>
+              <li type="a">What's the purpose of the statement <code>apply plugin: "java"</code> in <code>build.gradle</code>?</li>
+              <li type="a">Execute <code>gradle tasks</code> and explore the tasks defined by the Gradle Java plugin. In particular, run <code>gradle build</code> and explain the outcome of this task.</li>
+              <li type="a">Why is <code>Quote.java</code> placed in that particular directory?</li>
+              <li type="a">Explain the meaning of the blocks <code>dependencies</code> and <code>repositories</code> in the <code>build.gradle</code> file.</li>
+          </ul>
+
+      <p>
+          Modify the class to implement the following <code>Main</code> method:
+
+<pre>
+    public static void main(String[] args) {
+        System.out.println("Running the Quote application");
+        Quote q = new Quote();
+        q.setId(new Long(1));
+        q.setWho("Julius Caesar");
+        q.setWhat("I came, I saw, I conquered.");
+        System.out.println(q);
+    }
+</pre>
+
+      <p>
+          In order to execute this code from Gradle, we need to add an additional plugin. Modify <code>build.gradle</code> by adding the following code, and then execute "<code>gradle run</code>". Analyze what happened. Hint: read "<a href="http://gradle.org/docs/current/userguide/application_plugin.html">Application Plugin</a>".
+
+<pre>
+    apply plugin:'application'
+    mainClassName = "pt.ulisboa.tecnico.cmov.quote.Quote"
+</pre>
+
+      <h4>3. Multiple Java projects</h4>
+      <p>
+          Typically, a project is not a monolithic piece of software, but consists of multiple components, e.g., libraries or APIs. Gradle can gracefully handle complex projects by structuring them into sub-projects. Each sub-project is placed in a sub-directory and managed by a specific <code>build.gradle</code> file.
+      <p>
+          To understand how Gradle manages sub-projects, download and uncompress the project file <a href="exercise-ii/example3.zip">example3.zip</a> and answer the following questions (Hint: see <a href="http://rominirani.com/2014/07/29/gradle-tutorial-part-3-multiple-java-projects/">"Gradle Tutorial: Part 3: Multiple Java Projects"</a>):
+
+          <ul>
+              <li type="a"> Which sub-projects is this project broken up to? Determine how to execute Gradle in order to build (i) the entire project, and (ii) each sub-project individually.</li>
+              <li type="a"> Identify the dependencies of each sub-project and draw the project's dependency graph.</li>
+          </ul>
+
+
+      <h4>4. Gradle and Android Studio</h4>
+      <p>
+          Android Studio leverages Gradle to manage its projects using the Gradle Android plugin. Refer to the Hello World project implemented in Exercise I. With the help of the tutorial <a href="http://rominirani.com/2014/08/19/gradle-tutorial-part-6-android-studio-gradle/">"Gradle Tutorial: Part 6: Android Studio + Gradle"</a>, perform the following exercises:
+
+          <ul>
+              <li type="a"> Identify within the internal structure of the project, which files are relevant to Gradle and what their role is.</li>
+              <li type="a"> Clean up and rebuild the project using the Gradle tasks panel of Android Studio.</li>
+              <li type="a"> Repeat the previous operations using the Gradle console.</li>
+              <li type="a"> Re-execute the clean and build tasks using an external terminal and the Gradle distribution bundled in Android Studio (Hint: explore the script <code>gradlew</code>).</li>
+          </ul>
+
+      <p>
+          At this point, it should be clear that there's no magic under the hood. For future reference, consider the following guides:
+
+          <ul>
+              <li><a href="https://developer.android.com/sdk/installing/studio-build.html">Android Build System Overview</a></li>
+              <li><a href="https://gradle.org/documentation">Gradle User Guide</a></li>
+              <li><a href="http://gradle.org/docs/current/userguide/java_plugin.html">Gradle Java Plugin User Guide</a></li>
+              <li><a href="http://tools.android.com/tech-docs/new-build-system/user-guide">Gradle Plugin User Guide for Android Tools</a></li>
+          </ul>
+
+
+  <h3>
+      Exercise III &ndash; TODO list app</h3>
+
+      <p>
+          Implement a simple TODO list application consisting of a single activity. The activity must show two views arranged vertically: an <code>EditText</code> view, and a ListView view. The user types a string in the EditText view, and the ListView will be updated with the new string placed in the top of the list.</p>
+
+      <ul>
+      <li><b>Hint 1</b>: Use an ArrayAdapter to bind an ArrayList containing the string list to the ListView.</li>
+      <li><b>Hint 2</b>: To capture the input action of the user on the EditText view, implement setOnKeyListener of this view.</li>
+    </ul>
+</div>
+</body>
+</html>
