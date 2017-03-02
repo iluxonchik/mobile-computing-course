@@ -2,5 +2,5 @@
     <string name="app_name">HelloWorld</string>
     <string name="text_text">Hello, world</string>
     <string name="button_text">Send</string>
-    <string name="title_activity_display_message">My Message</string>
+    <string name="title_activity_display_message">Sample Message</string>
 </resources>

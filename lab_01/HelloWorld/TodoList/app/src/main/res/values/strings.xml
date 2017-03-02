@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TodoList</string>
+    <string name="editTextHint">Enter item text here</string>
+    <string name="addItemTxt">Add Item</string>
+</resources>
