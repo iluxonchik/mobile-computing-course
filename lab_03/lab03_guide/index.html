@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Mobile and Ubiquitous Computing 2016/2017 - MEIC/MERC - DEI - ISTT</title>
+  <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>
+
+<div id="content">
+  <h1 align="center"><font size="4">MEIC/MERC 2016/2017</font></h1>
+          
+  <h1 align="center"><font size="5">Mobile and Ubiquitous Computing</h1>
+
+  <h1 align="center"><font size="4">Lab Guide 3</font></h1>
+
+  <h1 align="center"><font size="5">Multithreading and Storage in Android</font></h1>
+
+  <h3>&nbsp;</h3>
+
+  <hr />
+  <h4>Objectives:</h4>
+  <ul>
+  <li>Introduction to multithreading in Android: UI thread, worker threads, and AsyncTasks.</li>
+  <li>Overview of the main Android mechanisms for local data storage: files and databases.</li>
+  </ul>
+  <h4>
+    Material:</h4>
+  <ul>
+      <li><a href="slides.pdf">Slides</a></li></ul>
+  <hr />
+
+  <!--    <p>&nbsp;</p> -->
+
+  <h3>
+      Exercise I &ndash; Threads and Concurrency</h3>
+      <p>
+        The goal of this exercise is introduce you to the behavior of UI thread, worker threads, and AsyncTasks.</p>
+
+      <h4>1. Basic threading</h4>
+
+      <p>
+        a) Create an Android application with a single activity and a time ticker thread running in background. The worker thread maintains an internal counter which is incremented every second. For each iteration, the counter value must be printed in the LogCat debugging console. Add two buttons to the main activity: "Start" and "Stop". The "Start" button must reset the counter and start counting. The "Stop" button must stop counting. Tips:
+
+      <ul>
+          <li>Use <code>Log.d()</code> to print the ticking messages. To enable LogCat to filter messages based on the application package name, make sure to set the Android Studio option <code>Tools > Android > Enable ADB Integration</code>.</li>
+          <li>Use <code>Thread.sleep()</code> to block the worker thread for a configurable about of time.</li>
+          <li>To stop the worker thread from the main thread, invoke the <code>interrupt()</code> method of the worker thread and return from the worker thread's loop if an interrupt occurs.</li>
+      </ul>
+
+      <p>
+        b) Inspect the threads of your application using the debugger. Run the app on the emulator, press the "Start" button, and open the Android Device Monitor (ADM). On the "Devices" panel of ADM (to the left hand side), select your application ID, and click the icon "Update threads" in the top of the panel. Identify the main thread and the worker thread running. Then press the "Stop" button. What happened to the threads?</p>
+
+
+      <h4>2. Message passing between threads</h4>
+
+      <p>
+        a) Import the project <a href="SimpleImageDownload.tgz">SimpleImageDownload.tgz</a> into Android Studio. Compile it, test it on the emulator, and study its code. What does this application do?</p>
+
+      <p>
+        b) Modify this application so that the status messages currently  printed in the LogCat console are written instead in the UI (below the "Download File" button). Use a handler to enable the worker thread to communicate with the UI thread. Follow the steps described next and explain what this code does:</p>
+
+      <ul>
+          <li type="1">Create a <code>Handler</code> object and bind it to the UI thread. For this, in the main activity, add the following line:</li>
+          <pre>private Handler handler = new Handler(this);</pre>
+          <li type="1">Implement the <code>Handler.Callback</code> interface in the <code>Activity</code>. First, modify the activity signature with the qualifier "<code>implements Handler.Callback</code>", then add the following callback implementation to the activity:</li>
+          <pre>public boolean handleMessage(Message msg) {
+    String text = msg.getData().getString("status");
+    TextView statusText = (TextView) findViewById(R.id.status);
+    statusText.setText(text);
+    return true;
+}</pre>
+          <li type="1">From the download thread, use the handler object to send a message containing the new status text to the UI thread. More concretely, replace the calls to <code>Log.i</code> with calls to <code>sendMessage</code> and implement the <code>sendMessage</code> method:</li>
+          <pre>private void sendMessage(String what) {
+    Bundle bundle = new Bundle();
+    bundle.putString("status", what);
+    Message message = new Message();
+    message.setData(bundle);
+    handler.sendMessage(message);
+}</pre>
+      </ul>
+
+      <h4>3. Async tasks</h4>
+      <p>
+        Modify the project SimpleImageDownload in order to download the image using an <code>AsyncTask</code> and show the downloaded image on an <code>ImageView</code> widget. To show the downloaded image in the <code>ImageView</code>, use the method <code>setImageBitmap()</code>. Create an AsyncTask as shown in the <a href="http://developer.android.com/reference/android/os/AsyncTask.html">reference manual</a> and override method <tt>onPostExecute()</tt> to update the image view. Tip: Use the following skeleton for your <code>AsyncTask</code>:
+
+      <pre>public class DownloadTask extends AsyncTask<String, Void, Bitmap> {
+
+    public DownloadTask(ImageView imageView, TextView statusText) {
+      ...
+    }
+
+    @Override
+    protected void onPreExecute() {
+      ...
+    }
+
+    @Override
+    protected Bitmap doInBackground(String... inputUrls) {
+      ...
+    }
+
+    @Override
+    protected void onPostExecute(Bitmap result) {
+      ...
+    }
+}</pre>
+
+      <h4>4. Custom message loops</h4>
+      <p>
+        Learn more about message queues and communication between threads by studying a simple implementation of the classic producers-consumers problem. Import the project <a href="ProducerConsumerWithLooper.tgz">ProducerConsumerWithLooper.tgz</a> into Android Studio. Compile it, execute it, and understand its code. Interpret the output of the program in the LogCat console. In the source code, what's the role of the <code>handler</code> variable? What's a <code>Looper</code>?
+
+  <h3>
+      Exercise II &ndash; Local Data Storage</h3>
+
+      <h4>1. Reading and writing files</h4>
+      <p>
+        Download and import the project <a href="FileExplorer.tgz">FileExplorer.tgz</a> into Android Studio. Build the project and run it on the emulator. This application will help you to understand how to read and write files in both internal and external local storage.
+
+      <p>
+        a) Launch the application and press the button "Use Internal Storage". Write some text and hit "Write". Then, tap the "Read" button. To make sure that the text is stored persistently, terminate and restart the application. Next, in the main activity, select the same option as before and tap the "Read" button. You should see your text. Explain how the application is performing the read and write file operations by studying the source code of the application. What is the name of the data file accessed by the application?
+
+      <p>
+        b) Locate the data file in the file system of the emulator using the adb tool. Proceed as follows:</p>
+
+        <ul>
+            <li>Open a console and add the path of the adb tool to the <code>PATH</code> environment variable. The path to adb is <code>&lt;sdk&gt;/platform-tools</code>. To figure out the location of the <code>&lt;sdk&gt;</code> directory, select "File > Project Structure" in Android Studio.</li>
+            <li>Obtain the name of your emulator by executing the command: <code>adb devices</code>.</li>
+            <li>Open a shell to the emulator. Assuming that the emulator name is "emulator-5554", run the command: <code>adb -s emulator-5554 shell</code>.</li>
+            <li>You are now logged in the emulator. You can execute the commands of a typical Linux console. Locate the application data file in the path: <code>data/data/&lt;package&gt;/files</code>. Use the package name of the application. Check that the content of the data file matches your input text.</li>
+        </ul>
+
+      <p>
+        c) Repeat both these questions for external storage. In the main activity select instead the option "Use External Storage". Note that if you are using an emulator for this example you'll have to make sure that you created an SD card for the instance you're working with. Use the adb to locate the file in the SD card. The path is <code>/sdcard/Android/data/&lt;package&gt;/files</code>.</p>
+
+      <p>
+        d) In our file-handling example activities you may notice a subtle potential problem. We're performing I/O operations from the main UI thread. This is almost never a good idea. Reading and writing data to and from filesystem, internal or external, can block the main UI thread. Fix this problem by performing I/O this from a Thread or an AsyncTask.
+
+      <h4>2. Shared preferences files and SQLite databases</h4>
+      <p>
+        Investigate two additional Android storage mechanisms &ndash; shared preferences files and SQLite databases &ndash; by reading "<a href="http://developer.android.com/guide/topics/data/data-storage.html#pref">Using Shared Preferences</a>" and "<a href="http://developer.android.com/guide/topics/data/data-storage.html#db">Using Databases</a>" from the official Android documentation.
+
+<!--
+
+      <h4>2. Setting and remembering shared preferences</h4>
+      <p>
+
+      <h4>3. Working with SQLite databases</h4>
+      <p>
+-->
+
+  </div>
+</body>
+</html>
