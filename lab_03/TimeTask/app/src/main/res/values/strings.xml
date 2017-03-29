@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TimeTask</string>
+    <string name="btn_start">Start</string>
+    <string name="btn_stop">Stop</string>
+    <string name="btn_reset">Reset</string>
+    <string name="start_text">0</string>
+</resources>
