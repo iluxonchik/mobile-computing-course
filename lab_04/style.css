@@ -1,0 +1,222 @@
+/* fixed text body width */
+body {
+  text-align: center;
+}
+#content {
+  width: 750px; 
+  margin: auto;
+  text-align: left;
+}
+/************************************************************************/
+/* Link definition */
+a:link {
+  color: rgb(0,0,255);
+  font-size: 10pt;  
+  font-family: 'Ubuntu', sans-serif, Arial, Helvetica;
+  font-weight: normal;
+  text-decoration: none;
+}
+a:visited {
+/*  color: rgb(0,66,123); */
+  color: rgb(0,185,0);
+  font-size: 10pt;  
+  font-family: 'Ubuntu', sans-serif, Arial, Helvetica;
+  font-weight: normal;
+  text-decoration: none;
+}
+a:active {
+  color: rgb(255,0,0);
+  font-size: 10pt;  
+  font-family: 'Ubuntu', sans-serif, Arial, Helvetica;  
+  font-weight: normal;
+  text-decoration: none;
+}
+a:hover {
+  color: rgb(0,0,255);
+  font-size: 10pt;  
+  font-family: 'Ubuntu', sans-serif, Arial, Helvetica; 
+  font-weight: normal;
+  text-decoration: underline;
+}
+/************************************************************************/
+/* Link in the menuArea */
+a.linkMenu:link {
+  color: rgb(0,66,123);
+  font-size: 10pt;
+  font-family: "sans-serif", Arial, Helvetica;
+  font-weight: bold;
+  text-decoration: none;
+}
+a.linkMenu:visited {
+  color: rgb(0,0,153);
+  font-size: 10pt;
+  font-family: "sans-serif", Arial, Helvetica;
+  font-weight: bold;
+  text-decoration: none;
+}
+a.linkMenu:active {
+  color: rgb(255,0,0);
+  font-size: 10pt;
+  font-family: "sans-serif", Arial, Helvetica;
+  font-weight: bold;
+  text-decoration: none;
+}
+a.linkMenu:hover {
+  color: rgb(0,0,255);
+  font-size: 10pt;
+  font-family: "sans-serif", Arial, Helvetica;
+  font-weight: bold;
+  text-decoration: none;
+}
+/************************************************************************/
+/* Redefinition of H1 */
+H1 {
+  color: rgb(0,66,123);
+  font-family: "sans-serif", Arial, Helvetica;
+  font-size: 18pt;
+  font-weight: bold
+}
+/* Redefinition of H2 */
+H2 {
+  color: rgb(0,66,123);
+  font-size: 14pt;
+  font-family: "sans-serif", Arial, Helvetica;
+  font-weight: bold
+}
+/* Redefinition of H3 */
+H3 {
+  color: rgb(0,66,123);
+  font-family: "sans-serif", Arial, Helvetica;
+  font-size: 12pt;
+  font-weight: bold;
+  margin-top: 2.5em;
+  margin-bottom: 1.5em;
+}
+H4 {
+  color: rgb(0,66,123);
+  font-family: "sans-serif", Arial, Helvetica;
+  font-size: 11pt;
+  font-weight: bold;
+}
+H5 {
+  color: rgb(255,0,0);
+  font-family: "sans-serif", Arial, Helvetica;
+  font-size: 10pt;
+  font-weight: bold;
+  text-indent: 2em;
+  text-transform: uppercase;
+}
+/************************************************************************/
+/* Redefinition of p */
+p {
+    color: black;
+    vertical-align: top;
+    font-family: 'Ubuntu', sans-serif, Arial, Helvetica;
+    font-size: 10pt;
+    text-align: justify;
+    line-height: 150%;
+}
+/* Redefinition of pre */
+pre {
+    color: black;
+    vertical-align: top;
+    font-family: 'Inconsolata', Monospace, Courier, Courier New;
+    font-size: 10pt;
+    border: 1px solid #888;
+    padding: 2px;
+}
+/* Redefinition of code */
+code {
+    color: black;
+    font-family: 'Inconsolata', Monospace, Courier, Courier New;
+    font-size: 11pt;
+}
+/* Redefinition of pre */
+tt {
+    color: black;
+    vertical-align: top;
+    font-family: 'Inconsolata', Monospace, Courier, Courier New;
+    font-size: 10pt;
+}
+/************************************************************************/
+/* Redefinition of ul */
+ul {
+  color: black;
+  vertical-align: top;
+  font-family: 'Ubuntu', sans-serif, Arial, Helvetica;
+  font-size: 10pt;
+  text-align: justify;
+  line-height: 150%;
+}
+
+/* Redefinition of figure */
+figure {
+  text-align: center;
+}
+
+/* Redefinition of caption */
+figcaption {
+  font-size: 10pt;
+  font-family: Arial, sans-serif, Arial, Helvetica;
+  font-weight: bold; 
+  line-height: 200%;
+}
+
+/************************************************************************/
+/* Redefinition of ol */
+ol {
+  color: black;
+  vertical-align: top;
+  font-family: 'Ubuntu', sans-serif, Arial, Helvetica;
+  font-size: 10pt;
+  text-align: justify;
+  line-height: 150%;
+}
+
+/************************************************************************/
+/* Redefinition of dd */
+dd {
+  color: black;
+  vertical-align: top;
+  font-family: 'Ubuntu', sans-serif, Arial, Helvetica;
+  font-size: 10pt;
+  text-align: justify;
+  line-height: 150%;
+}
+
+/************************************************************************/
+/* Definition of textarea */
+#textArea {
+    color: black;
+    font-family: "sans-serif", Arial, Helvetica;
+    font-size: 10pt;
+    text-align: justify;
+}
+#textArea_red {
+    color: red;
+    font-family: "sans-serif", Arial, Helvetica;
+    font-size: 10pt;
+    text-align: justify;
+}
+#textArea_blue {
+    color: rgb(0,66,123);
+    font-family: "sans-serif", Arial, Helvetica;
+    font-size: 10pt;
+    text-align: justify;
+}
+
+/************************************************************************/
+/* Definition of small_textarea */
+#small_textArea {
+    color: black;
+    font-family: Arial, Helvetica;
+    font-size: 8pt;
+    text-align: justify;
+}
+#nonaligned_textArea {
+    color: black;
+    font-family: "sans-serif", Arial, Helvetica;
+    font-size: 10pt;
+}
+
+

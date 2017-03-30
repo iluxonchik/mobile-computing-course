@@ -1,0 +1,349 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Mobile and Ubiquitous Computing 2015/2016 - MEIC/MERC - DEI - ISTT</title>
+  <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>
+
+<div id="content">
+
+  <h1 align="center"><font size="4">MEIC/MERC 2015/2016</font></h1>          
+  <h1 align="center"><font size="5">Mobile and Ubiquitous Computing</h1>
+  <h1 align="center"><font size="4">Lab Guide 4</font></h1>
+  <h1 align="center"><font size="5">WiFi Direct</font></h1>
+
+  <h3>&nbsp;</h3>
+
+  <hr />
+  <h4>Objectives:</h4>
+  <ul>
+  <li>Overview of WiFi Direct.</li>
+  <li>Introduction to the Termite WiFi Direct network emulator.</li>
+  </ul>
+  <h4>
+    Material:</h4>
+  <ul>
+      <li><a href="slides.pdf">Slides</a></li></ul>
+  <hr />
+
+  <!--    <p>&nbsp;</p> -->
+
+  <h3>
+      Exercise I: Discover Nearby Devices Using WiFi Direct</h3>
+
+
+      <p>
+      The goal of this exercise is to demonstrate how to build Android applications that can detect the presence of nearby devices using WiFi Direct. In addition, it will show you how to test such applications on virtual WiFi Direct networks emulated using the Termite network emulator. For this exercise, you need to download the following packages:
+
+      <ul>
+        <li>
+          <a href="Termite-Cli-20160329.tgz">Termite-Cli-20160329.tgz</a>: A binary distribution of the Termite client tool.</li>
+        <li>
+          <a href="Termite-WifiP2P-API-20160329.tgz">Termite-WifiP2P-API-20160329.tgz</a>: The binary of Termite WiFi Direct API.</li>
+        <li>
+          <a href="Termite-WifiP2P-PeerScanner-20160329.tgz">Termite-WifiP2P-PeerScanner-20160329.tgz</a>: A simple application that scans devices within the device's WiFi range.</li>
+      </ul>
+
+
+      <h4>1. Explore the PeerScanner Application</h4>
+      <p>
+        Download the Android application <a href="Termite-WifiP2P-PeerScanner-20160329.tgz">Termite-WifiP2P-PeerScanner.tgz</a> and open it on Android Studio. This application illustrates the basic steps towards using the WiFi Direct API. Note, however, that, in order to operate with Termite, PeerScanner uses a modified version of the Android WiFi Direct API, which can be found under the "libs" folder.
+
+      <p>
+        Compile the application and run it on the emulator. Then, inspect the source code of the application and interpret it by referring to the <a href="Termite-API.pdf">Termite WiFi Direct API Guide</a>. In particular, identify the purpose of the following source code fragments:
+
+      <ul>
+        <li>
+          broadcast receiver,</li>
+        <li>
+          service declaration in the application manifest,</li>
+        <li>
+          initialization code in Activity creation method,</li>
+        <li>
+          listeners associated with buttons.</li>
+      </ul>
+
+      <p>
+        To test this application, we need to emulate a virtual WiFi Direct using Termite. Next, we explain how to do so.
+
+      <h4>2. Install and Run the Termite Client</h4>
+      <p>
+        <b>1. Install Termite:</b>  Download the Termite client and decompress it on a local directory. Next, you need to set up some configuration attributes of your Termite installation. Under the Termite-Cli directory, open the file <code>etc/platform/X/backends.conf</code>, where X is your target platform: <code>windows</code>, <code>linux</code>, or <code>mac</code>. By default, this file looks as follows:
+
+      <pre>{
+    "backends" : [
+        {
+            "id" : "avd",
+            "connector" : "avd",
+            "config" : {
+                "sdk" : "/Users/nsantos/Library/Android/sdk",
+                "vmi" : "Nexus_5_API_21_x86"
+            }
+        }
+    ]
+}</pre>
+
+      <p>
+        You need to update the attributes <code>sdk</code> and <code>vmi</code>. The <code>sdk</code> attribute must be updated with the correct Android SDK path. A simple way to determine this is by opening Android Studio and opening the project settings. (Note: on Windows, you must write the sdk path using doubled backslashes, e.g., <code>"c:\\my\\path\\to\\sdk"</code>.) For now ignore the <code>vmi</code> attribute.
+
+      <p>
+        <b>2. Run the termite tool:</b> Open a terminal window and change directory to the <code>Termite-Cli</code> folder. Set the environment variable <code>TERMITE_CLI_PATH</code> to point to the location of the Termite CLI module, i.e., this path. In Linux or Mac OS, an easy way to do this is to update file <code>env/platform/{linux,mac,windows}/env_setup.sh</code> and then, on the terminal window, execute the command: <code>source env/platform/{linux,mac,windows}/env_setup.sh</code>. Naturally, you can also create your own "env" file. Then run the script <code>./termite.sh</code>. On windows, the procedure is different. To set up the environment variable, use the command "<code>set TERMITE_CLI_PATH=...</code>". The environment variable <code>TERMITE_PLATFORM</code> must also be set up accordingly to either: <code>windows</code>, <code>linux</code>, or <code>mac</code>. To execute the Termite client, run the batch file termite.bat. If everything goes well, the following output is expected:
+
+        <pre>
+  Termite Testbed
+  Working Directory = /Users/nsantos/Desktop/Termite-Cli
+  Type "help" or "h" for the full command list
+
+avd:simplechat> </pre>
+
+      <p>
+        Termite is now ready to accept your commands.
+
+
+    <h4>3. Emulate Node Movement in a Virtual WiFi Direct Network</h4>
+    <p>
+      The next step is to test PeerScanner on a virtual WiFi Direct network emulated on Termite. The virtual network is very simple. It comprises two nodes only: A and B. A is an Android device and B is a WiFi beacon. The nodes are firstly located apart from each other, and in a second state they become reachable within their respective WiFi signal ranges. We want to simulate this virtual network as depicted in the figure below such that by running PeerScanner on node A, B is not detected in State 1, but is detected in State 2:
+
+    <p>
+      <center><img src="two-node-net.png" width="650"></center>
+
+    <p>
+    <b>1. Create the virtual nodes:</b> On Termite, create two virtual devices, one for A, and other for B, by executing the command <code>newdevice</code>. Then, list the devices of the current virtual network with the <code>list</code> command.
+
+    <pre>avd:simplechat> newdevice A
+avd:simplechat> newdevice B
+avd:simplechat> list devices
+A 0.0.0.0:1 0.0.0.0:1 0.0.0.0:1
+B 0.0.0.0:2 0.0.0.0:2 0.0.0.0:2</pre>
+
+    <p>For now, ignore the IP addresses displayed by "list devices". These addresses will be used for communication between emulated Android devices. You can delete a device using a specific command (<code>deletedevice [name]</code>).
+
+    <p>
+      <b>2. Associate an Android emulator to node A:</b> Next, we want to associate an Android emulator to node A. This emulator will be the host for the PeerScanner application. To perform this association, we need to carry out several steps. First, make sure that one Android emulator is running. Termite must then detect it by executing the command <code>list emus</code>:
+
+      <pre>avd:simplechat> list emus
+e1 => online
+    name: emulator-5554</pre>
+
+    <p>Then, it is necessary to configure the network addresses of the emulator. In order for the PeerScanner application to be able to communicate with other virtual devices and for the termite tool to communicate with the emulators, it is necessary to perform some port redirection operations. The termite tool can help in this task. First, you need to assign network addresses to each emulator individually using the <code>assignaddresses</code> as follows:
+
+    <pre>avd:simplechat> assignaddr e1
+avd:simplechat> list emus
+e1 => netok
+    name: emulator-5554
+    addr: [ avaddr = 192.168.0.1:10001, araddr = 10.0.2.2:10011, cvaddr = 127.0.0.1:9001, craddr = 127.0.0.1:9011]</pre>
+
+    <p>
+      From this listing, what is important to understand for now is the "avaddr" attribute which means: application virtual address. Essentially these are the virtual addresses that Termite emulates for the application running on this particular emulator. For example, for emulator-5554, the virtual IP address seen by the application is 192.168.0.1, and the port number where the application will be listening is 10001. The PeerScanner application will be listening for connections on this port. These addresses are specified in the Termite configuration file <code>etc/netprofiles.conf</code>.
+
+    <p>
+      Next, we must bind the emulator to the virtual device A. This is done using the <code>binddevice</code> command as illustrated next:
+
+      <pre>avd:simplechat> binddevice A e1
+avd:simplechat> list devices
+A 192.168.0.1:10001 10.0.2.2:10011  127.0.0.1:9011
+B 0.0.0.0:2 0.0.0.0:2 0.0.0.0:2</pre>
+
+    <p>
+      The list devices command provides details of your virtual network. In the network emulation, these are the names to be used when referring to the virtual nodes, not emulator names. You can see that after the bind operation, the virtual addresses of device A have changed. We are now ready to deploy the application on the emulator and emulate the network states depicted in the figure above.
+
+    <p>
+      <b>3. Emulate the virtual network:</b> From Android Studio, deploy the PeerScanner application on the emulator. Then press the "WiFi On" button to start the WiFi Direct service on the application. On the Termite console, execute <code>ping</code> and verify that the node is online:
+
+      <pre>avd:simplechat> ping
+A 127.0.0.1 9011  ONLINE
+B 0.0.0.0 2 OFFLINE</pre>
+
+      <p>
+      This means that the Termite service is waiting on port 9011 of the localhost. These ports are internally redirected to the port 9001 inside the emulator. Naturally, since no Android emulator is bound to node B, B appears to be offline.
+
+      <p>
+      The initial network state is set so that each node in the network is isolated from each other. If you press "In Range", the list will be empty. This corresponds to State 1 (see the figure above).
+
+      <p>
+      From the Termite client, it is possible to modify the topology of the network by triggering certain events. The first relevant event we need to know is "movement", which tells a particular node to move to the neighborhood of another node enabling them to become reachable. Thus, to emulate State 2, we can instruct Termite to "move" A close to node B as shown next (when you execute the following commands, make sure that the emulator is visible so that you can see a toast being displayed):
+
+      <pre>avd:simplechat> move A (B)
+avd:simplechat> list neighbors
+A => B
+B => A
+avd:simplechat> commit
+A 127.0.0.1 9011  SUCCESS
+B 0.0.0.0 2 FAIL</pre>
+
+      <p>
+        Check that toast messages popped up reading "Peer list changed". Click on "In range" to see which peers are available. If you click "In network" the list will be empty because the network is not formed yet. To form a network, it is necessary to create a group, which we will see in the next section.
+
+      <p>
+        In the sequence of commands performed before, note that the changes to the virtual network topology are performed locally in the termite console. In order to propagate the topology information to the nodes, you must execute <code>commit</code>. To move the nodes apart, you can simply issue the command "<code>move A ()</code>" followed by <code>commit</code>.
+
+    <p>
+      <b>4. Scripts:</b> Termite supports scripts. In other words, the commands that are executed on the console line can be loaded from a scripting file. Scripts are located in the "scripts" folder of the Termite client distribution. The script file naming follows the convention: "s.termite", where "s" is the script name. To run the script from the console, execute <code>load s</code>. Check for example the "example.termite" script and run it from the console. The command <code>wait</code> either waits until the user presses a key, or waits until a certain timeout expires if a timeout value is provided as argument.
+
+    <h4>4. Do It Yourself</h4>
+    <p>
+    To better learn all these new concepts, emulate the following scenarios:
+
+      <ul>
+        <li>
+          <b>Scenario 1</b>. There are four nodes: one Android device (node N1) and three beacons (B1, B2, and B3). Simulate the scenario where the three beacons are placed sequentially on a street, set apart from each other, and a user which is carrying the device N1 goes past each beacon one by one. Write a script that automates the movement performed by the user. Use the <code>wait</code> command to introduce delays as the user moves past each beacon.</li>
+        <li>
+          <b>Scenario 2</b>. There are two Android devices: node N1 and N2. Simulate the scenario where they approach each other and move apart after some time. In this case, you need to launch a second emulator and associate it with node N2.</li>
+      </ul>
+
+  <h3>
+      Exercise II: WiFi Group Formation and Message Exchange</h3>
+
+      <h4>1. Explore the MsgSender Application</h4>
+      <p>
+        Download the Android application <a href="Termite-WifiP2P-MsgSender-20160329.tgz">Termite-WifiP2P-MsgSender.tgz</a> and open it on Android Studio. This application illustrates how to set up WiFi groups and exchange messages. It allows devices to form a WiFi group and enables their respective users to exchange messages. To send a message to another device, the user must write the virtual IP address of the destination node, press "Connect", then write a message and press "Send".
+
+      <p>
+        Compile the application and run it on the emulator. Then, inspect the source code of the application and interpret it by referring to the <a href="Termite-API.pdf">Termite WiFi Direct API Guide</a>. In particular, identify the purpose of the following source code fragments:
+
+      <ul>
+        <li>
+          listeners associated with group membership,</li>
+        <li>
+          asynctasks responsible for sending and receiving messages.</li>
+      </ul>
+
+      <p>
+        To test this application, we need to emulate a virtual WiFi Direct group using Termite, as we explain next.
+
+      <h4>2. Emulate P2P Groups in a Virtual WiFi Direct Network</h4>
+
+      <p>
+        To test the MsgSender application, our target network is shown below. In this case, we have two virtual Android devices (A and B), both of which running the MsgSender application. In State 3, a group is formed between the nodes, being A the group owner (GO). At this point, they are assigned virtual IP addresses and can open regular TCP/IP connections based on their respective virtual IPs.
+
+      <p>
+        <center><img src="two-node-group.png" width="700"></center>
+
+      <p>
+        <b>1. Emulate group formation and peer-to-peer communication:</b> Follow the steps indicated in Exercise I in order to emulate a virtual network until State 2. Next, form a Wifi group containing both nodes A and B. Node A will be the group owner (GO) of the network. Execute these commands:
+
+<pre>avd:simplechat> creategroup A (B)
+avd:simplechat> list groups
+A => B
+avd:simplechat> commit</pre>
+
+      <p>    
+        Observe new toasts reading "Network membership changed", and "Group owner changed" for node A. On A, learn B's address (192.168.0.2), type it on A's edit text box, and then hit the "Connect" button. This will open sockets between both nodes enabling them to exchange messages in a conversational fashion. Test this feature. On A, send a message to B.
+
+      <p>
+        <b>2. Emulate group destruction and communication breaks:</b> Now, delete the group and see what happens. To delete the group, on the command line execute:
+
+      <pre>avd:simplechat> deletegroup A
+avd:simplechat> commit
+B 127.0.0.1 9021  SUCCESS
+A 127.0.0.1 9011  SUCCESS</pre>
+
+      <p>
+      It is also possible to emulate nodes moving away and leaving the group without explicitly destroying the group. To test this, recreate the group:
+
+      <pre>avd:simplechat> creategroup A (B)
+avd:simplechat> list groups
+A => B
+avd:simplechat> commit</pre>
+
+      <p>
+      Then, on B, open a connection to A. Now, move the nodes apart from each other. This will cause the group to be automatically destroyed. On termite, execute:
+
+      <pre>avd:simplechat> move A ()
+avd:simplechat> list n
+A => 
+B => 
+avd:simplechat> list groups
+A => 
+avd:simplechat> commit
+B 127.0.0.1 9021  SUCCESS
+A 127.0.0.1 9011  SUCCESS</pre>
+
+      <p>
+        <b>7. Adding members to pre-existing groups:</b> From the previous listing, see that the group owned by A still exists. To repeat the scenario in which both nodes can communicate, you can again add B to A's group:
+
+<pre>avd:simplechat> move B (A)
+avd:simplechat> joingroup B (A)
+avd:simplechat> list groups
+A => B
+avd:simplechat> commit
+A 127.0.0.1 9011  SUCCESS
+B 127.0.0.1 9021  SUCCESS</pre>
+
+      <p>
+      Verify that you can again open a channel between A and B and have them communicating.
+
+      <p>
+      <b>Tips:</b> To redeploy the application, only need to: deploy it to both emulators from Android Studio and on Termite client execute  <code>commit</code>, to propagate the current network state to the devices. It is not necessary to repeat all the network formation steps from scratch if the network topology you need to emulate is already in memory in the termite tool. To know what's the current network state execute: <code>list network</code>.
+
+
+    <h4>3. Do It Yourself</h4>
+    <p>
+    Modify the MsgSender application in order to support a conversational operation mode, in which the users can exchange multiple messages in the same connection. In the current version of MsgSender, one message only is allowed to be sent to a remote party per connection.
+
+  <h3>
+      Appendix: Useful Tips</h3>
+
+      <p>
+      <h4>1. Importing the Termite API into your project</h4>
+
+      <p>In order to use the Termite API in your project, unzip the library file <a href="Termite-WifiP2P-API-20160329.tgz">Termite-WifiP2P-API-20160329.tgz</a> into the subdirectory <code>libs</code> of your project (e.g., <code>MyProject/app/libs</code>). Then, add the following code in your file <code>MyProject/app/build.gradle</code>:
+
+<pre>dependencies {
+  compile(name:'Termite-WifiP2P-API', ext:'aar')
+}
+repositories{
+  flatDir{
+    dirs 'libs'
+  }
+}</pre>
+
+
+    <h4>2. Using the Genymotion connector</h4>
+
+      <p>
+        Genymotion is a Virtual Machine manager based on VirtualBox. It provides a similar functionality to AVD's, but performs much better and consumes less resources than AVD. To manage Genymode emulators in Termite, follows these steps: 
+
+      <p>
+        <b>1. Install Genymotion:</b> First, you need to install <a href="https://www.virtualbox.org">VirtualBox</a>. Then, download <a href="https://www.genymotion.com">Genymotion</a> and install it on your local machine.
+
+      <p>
+        <b>2. Create virtual devices:</b> Start Genymotion, and create a new virtual device from the image "Custom Phone - 5.0.0 - API 21 - 768x1280". Assign it a name, e.g. "<code>TVD - 5.0.0 - API 21 - 768x1280</code>". Change some of the virtual device's settings: set the memory to 512MB, and check "Use virtual keyboard for input". Then, create two clones of this virtual device image using the command line, as shown below. These clones will be the images of the emulators to be launched by Termite.
+
+      <pre>  $ VBoxManage clonevm "TVD - 5.0.0 - API 21 - 768x1280" --name "TVD - 5.0.0 - API 21 - 768x1280-Clone0" --register
+  $ VBoxManage clonevm "TVD - 5.0.0 - API 21 - 768x1280" --name "TVD - 5.0.0 - API 21 - 768x1280-Clone1" --register
+  $ VBoxManage list vms</pre>
+
+      <p>
+        Note: it is very important that the name of each clone follows the convention <i>vdname</i><code>-Clone#</code>, otherwise, Termite won't be able to spawn emulators. The clone numbering # starts in 0.
+
+      <p>
+        <b>3. Configure Termite:</b> Update the backend "genymotion" in file <code>etc/platform/[mac|linux|windows]/backends.conf</code>. In particular, update the following attributes:
+
+        <ul>
+          <li>
+            "sdk": the full path to Android SDK</li>
+
+          <li>
+            "path": the full path to Genymotion</li>
+
+          <li>
+            "vmiprefix": the original name of the virtual device, in this case: "TVD - 5.0.0 - API 21 - 768x1280"</li>
+
+          <li>
+            "numclones": the number of available clones, in this case: 2</li>
+        </ul>
+
+      <p>
+        <b>4. Update Termite's init script:</b> Edit the configuration file <code>Termite-Cli/etc/termite.conf</code>, and set the attribute "init" to "simplechat-gm.termite", which corresponds to the name of a termite script located in <code>Termite-Cli/etc/init</code>.
+
+      <p>
+        <b>5. Emulate the network:</b> Restart Termite, and proceed as indicated previously in this guide in order to emulate a virtual network.
+</div>
+</body>
+</html>
